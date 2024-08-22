@@ -1,10 +1,10 @@
 from ..imports.shared_imports import *
-from ..configuration.environment import load_variables
-
-api_key = load_variables()
+from ..configuration.environment import gemini_key
+from .tools import tool
+api_key = gemini_key()
 class Agents:
     def setup_llm(self):
-        self.llm = ChatGoogleGenerativeAI(model = "", verbose = True, temperature = 0.5, google_api_key = api_key) 
+        self.llm = ChatGoogleGenerativeAI(model = "gemini-1.5-flash", verbose = True, temperature = 0.5, google_api_key = api_key) 
         print("llm setup successful")
 # Creating a senior researcher agent with memory and verbose mode.
     def researcher_agent(self):
@@ -14,20 +14,20 @@ class Agents:
             verbose=True,
             memory=True,
             backstory = ("Driven by curiosity, you are at the forefront of innovation eager to explore and share knowledge that could change the world."),
-            tools = [],
+            tools = [tool],
             llm = self.llm,
             allow_delegation = True
         )
         print("researcher agent created successfully")
 #Creating a writer agent with custom tools responsible in writing news blogs
     def writer_agent(self):
-        researcher = Agent(
+        writer = Agent(
             role ="Writer",
             goal ="Narrate compelling tech stories about {topic}",
             verbose=True,
             memory=True,
             backstory = ("With a flare for simplifying complex topics, you craft engaging narratives that captivate and educate, bringing new discoveries to light in an accessible manner."),
-            tools = [],
+            tools = [tool],
             llm = self.llm,
             allow_delegation = True
         )
