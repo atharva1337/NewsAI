@@ -20,9 +20,22 @@ class Agents:
         )
         print("researcher agent created successfully")
 #Creating a writer agent with custom tools responsible in writing news blogs
+    def writer_agent(self):
+        researcher = Agent(
+            role ="Writer",
+            goal ="Narrate compelling tech stories about {topic}",
+            verbose=True,
+            memory=True,
+            backstory = ("With a flare for simplifying complex topics, you craft engaging narratives that captivate and educate, bringing new discoveries to light in an accessible manner."),
+            tools = [],
+            llm = self.llm,
+            allow_delegation = True
+        )
+        print("writer agent created successfully")
 
     def execute_all(self):
         self.setup_llm()
-        self.researcher_agent()        
+        self.researcher_agent()
+        self.writer_agent()       
     
     
